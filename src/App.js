@@ -1,24 +1,38 @@
-import logo from './logo.svg';
 import './App.css';
+import {useState,useEffect} from 'react'
+import axios from 'axios'
+import React from "react";
+import Header from "./components/Header";
+import Features from './components/Features';
 
 function App() {
+   //creating IP state
+   const [ip, setIP] = useState('');
+
+   //creating function to load ip address from the API
+   const getData = async () => {
+     const res = await axios.get('https://geolocation-db.com/json/')
+     console.log(res.data);
+     setIP(res.data.IPv4)
+   }
+   
+   useEffect( () => {
+     //passing getData method to the lifecycle method
+     getData()
+ 
+   }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <><div className="App">
+      <h2>Your IP Address is</h2>
+      <h4>{ip}</h4>
+    </div><div className="App">
+        <Header />
+        <div className='f-heading'>
+          <h1>Features</h1>
+          <p>Here are some features of the software</p>
+        </div>
+        <Features />
+      </div></>
   );
 }
 
